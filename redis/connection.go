@@ -20,7 +20,9 @@ func New(opts ...pubsub.Option) (*connection, error) {
 	}
 
 	os := &redis.Options{
-		Addr: options.Endpoints[0],
+		Addr:      options.Endpoints[0],
+		Password:  options.Password,
+		TLSConfig: options.TLSConfig,
 	}
 
 	clnt := redis.NewClient(os)
