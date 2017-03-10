@@ -1,6 +1,8 @@
 package redis
 
 import (
+	"time"
+
 	"github.com/rai-project/pubsub"
 	"gopkg.in/redis.v5"
 )
@@ -13,6 +15,7 @@ type connection struct {
 func New(opts ...pubsub.Option) (*connection, error) {
 	options := pubsub.Options{
 		Endpoints: Config.Endpoints,
+		Password:  Config.Password,
 	}
 
 	for _, o := range opts {
@@ -23,6 +26,22 @@ func New(opts ...pubsub.Option) (*connection, error) {
 		Addr:      options.Endpoints[0],
 		Password:  options.Password,
 		TLSConfig: options.TLSConfig,
+	}
+
+	if val, ok := options.Context.Value(poolsizeKey).(int); ok {
+		os.PoolSize = val
+	}
+
+	if val, ok := options.Context.Value(poolTimeoutKey).(time.Duration); ok {
+		os.PoolTimeout = val
+	}
+
+	if val, ok := options.Context.Value(idleTimeoutKey).(time.Duration); ok {
+		os.IdleTimeout = val
+	}
+
+	if val, ok := options.Context.Value(idleCheckFrequencyKey).(time.Duration); ok {
+		os.IdleCheckFrequency = val
 	}
 
 	clnt := redis.NewClient(os)

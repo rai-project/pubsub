@@ -39,8 +39,8 @@ func IdleTimeout(t time.Duration) pubsub.Option {
 	}
 }
 
-func IdleCheckFrequency(ii int) pubsub.Option {
+func IdleCheckFrequency(t time.Duration) pubsub.Option {
 	return func(o *pubsub.Options) {
-		o.Context = context.WithValue(o.Context, idleCheckFrequencyKey, ii)
+		o.Context = context.WithValue(o.Context, idleCheckFrequencyKey, t)
 	}
 }
