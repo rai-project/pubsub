@@ -27,6 +27,7 @@ func NewSubscriber(conn *connection, channel string) (pubsub.Subscriber, error) 
 }
 
 func (s *subscriber) Start() <-chan pubsub.Message {
+	serializer := s.conn.options.Serializer
 	s.msgs = make(chan pubsub.Message)
 	go func() {
 		for {
@@ -44,7 +45,7 @@ func (s *subscriber) Start() <-chan pubsub.Message {
 					s.msgs = nil
 					return
 				}
-				s.msgs <- createMessage(msg)
+				s.msgs <- createMessage(serializer, msg)
 			}
 		}
 	}()

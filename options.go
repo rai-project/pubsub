@@ -5,14 +5,17 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/base64"
+
+	"github.com/rai-project/serializer"
 )
 
 type Options struct {
-	Endpoints []string
-	Username  string
-	Password  string
-	TLSConfig *tls.Config
-	Context   context.Context
+	Endpoints  []string
+	Username   string
+	Password   string
+	TLSConfig  *tls.Config
+	Serializer serializer.Serializer
+	Context    context.Context
 }
 
 type Option func(*Options)
@@ -65,6 +68,12 @@ func TLSCertificate(s string) Option {
 func TLSConfig(t *tls.Config) Option {
 	return func(o *Options) {
 		o.TLSConfig = t
+	}
+}
+
+func Serializer(s serializer.Serializer) Option {
+	return func(o *Options) {
+		o.Serializer = s
 	}
 }
 

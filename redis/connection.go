@@ -15,9 +15,10 @@ type connection struct {
 
 func New(opts ...pubsub.Option) (*connection, error) {
 	options := pubsub.Options{
-		Endpoints: Config.Endpoints,
-		Password:  Config.Password,
-		Context:   context.Background(),
+		Endpoints:  Config.Endpoints,
+		Password:   Config.Password,
+		Serializer: Config.Serializer,
+		Context:    context.Background(),
 	}
 
 	if Config.Cert != "" {

@@ -19,8 +19,11 @@ type Connection interface {
 // exchange, or specific message type; queue or buffer sizes; etc.) should be
 // done in the concrete constructor.
 type Publisher interface {
+	// Publish a single message, described by an interface using the serializer.
+	Publish(key string, i interface{}) error
+
 	// Publish a single message, described by an io.Reader, to the given key.
-	Publish(key string, r io.Reader) error
+	PublishReader(key string, r io.Reader) error
 
 	// Stop the publisher.
 	Stop() error
@@ -55,6 +58,8 @@ type Subscriber interface {
 type Message interface {
 	// Messages implement io.Reader to access the payload data.
 	io.Reader
+
+	Unmarshal(v interface{}) error
 
 	// Done indicates the client is finished with the message, and the
 	// underlying implementation may free its resources. Clients should ensure
