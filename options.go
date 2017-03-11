@@ -60,7 +60,8 @@ func TLSCertificate(s string) Option {
 		roots.AppendCertsFromPEM(cert)
 
 		o.TLSConfig = &tls.Config{
-			RootCAs: roots,
+			RootCAs:            roots,
+			InsecureSkipVerify: true,
 		}
 	}
 }
