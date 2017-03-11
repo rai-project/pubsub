@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"context"
 	"time"
 
 	"github.com/rai-project/pubsub"
@@ -16,6 +17,11 @@ func New(opts ...pubsub.Option) (*connection, error) {
 	options := pubsub.Options{
 		Endpoints: Config.Endpoints,
 		Password:  Config.Password,
+		Context:   context.Background(),
+	}
+
+	if Config.Cert != "" {
+		pubsub.TLSCertificate(Config.Cert)(&options)
 	}
 
 	for _, o := range opts {

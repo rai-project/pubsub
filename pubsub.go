@@ -2,6 +2,15 @@ package pubsub
 
 import "io"
 
+const (
+	EndPayload = "[[END]]"
+)
+
+type Connection interface {
+	Close() error
+	Options() Options
+}
+
 // Publisher is a minimal interface for publishing messages to a pool of
 // subscribers. Publishers are probably (but not necessarily) sending to a
 // message bus.

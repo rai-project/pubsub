@@ -7,9 +7,10 @@ import (
 )
 
 type redisConfig struct {
-	Provider  string   `json:"provider" config:"database.provider" default:"redis"`
-	Endpoints []string `json:"endpoints" config:"database.endpoints"`
-	Password  string   `json:"password" config:"database.password"`
+	Provider  string   `json:"provider" config:"pubsub.provider"`
+	Endpoints []string `json:"endpoints" config:"pubsub.endpoints"`
+	Password  string   `json:"password" config:"pubsub.password"`
+	Cert      string   `json:"cert" config:"pubsub.cert"`
 }
 
 var (
