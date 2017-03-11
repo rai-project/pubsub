@@ -25,6 +25,9 @@ type Publisher interface {
 	// Publish a single message, described by an io.Reader, to the given key.
 	PublishReader(key string, r io.Reader) error
 
+	// End the publisher on channel.
+	End(key string) error
+
 	// Stop the publisher.
 	Stop() error
 }

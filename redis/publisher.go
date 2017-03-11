@@ -39,6 +39,10 @@ func (p *publisher) PublishReader(key string, r io.Reader) error {
 	return conn.Publish(key, string(content)).Err()
 }
 
+func (p *publisher) End(key string) error {
+	return p.conn.Publish(key, pubsub.EndPayload).Err()
+}
+
 func (p *publisher) Stop() error {
 	return nil
 }

@@ -1,8 +1,6 @@
 package redis
 
 import (
-	"bytes"
-	"io/ioutil"
 	"testing"
 
 	"github.com/rai-project/pubsub"
@@ -30,10 +28,10 @@ func TestSubscribeMessage(t *testing.T) {
 	pub, err := NewPublisher(conn)
 	assert.NoError(t, err)
 
-	err = pub.Publish(channel, bytes.NewBufferString(payload))
+	err = pub.Publish(channel, payload)
 	assert.NoError(t, err)
 
-	err = pub.Publish(channel, bytes.NewBufferString(pubsub.EndPayload))
+	err = pub.End(channel)
 	assert.NoError(t, err)
 
 	err = pub.Stop()
@@ -41,9 +39,10 @@ func TestSubscribeMessage(t *testing.T) {
 
 	msgs := sub.Start()
 	for msg := range msgs {
-		content, err := ioutil.ReadAll(msg)
+		var data string
+		err := msg.Unmarshal(&data)
 		assert.NoError(t, err)
-		assert.Equal(t, payload, string(content))
+		assert.Equal(t, payload, data)
 	}
 	err = sub.Stop()
 	assert.NoError(t, err)

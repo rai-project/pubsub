@@ -6,7 +6,6 @@ import (
 
 	redis "gopkg.in/redis.v5"
 
-	"github.com/rai-project/pubsub"
 	"github.com/rai-project/serializer"
 )
 
@@ -26,7 +25,7 @@ func (m *message) Unmarshal(v interface{}) error {
 }
 
 // createMessage will convert the amqp.Delivery to a pubsub.Message
-func createMessage(serializer serializer.Serializer, d *redis.Message) pubsub.Message {
+func createMessage(serializer serializer.Serializer, d *redis.Message) *message {
 	return &message{
 		payload:    d.Payload,
 		Reader:     bytes.NewBufferString(d.Payload),

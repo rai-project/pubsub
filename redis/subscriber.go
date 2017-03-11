@@ -40,11 +40,13 @@ func (s *subscriber) Start() <-chan pubsub.Message {
 					s.err = err
 					continue
 				}
+
 				if msg.Payload == pubsub.EndPayload {
 					close(s.msgs)
 					s.msgs = nil
 					return
 				}
+
 				s.msgs <- createMessage(serializer, msg)
 			}
 		}
