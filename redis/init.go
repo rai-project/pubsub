@@ -16,10 +16,9 @@ var (
 )
 
 func init() {
-	config.OnInit(func() {
-		log = logger.WithField("pkg", "pubsub/redis")
-	})
 	config.AfterInit(func() {
+		log = logger.WithField("pkg", "pubsub/redis")
+
 		if config.IsDebug {
 			lg := llog.New(os.Stdout, "logger: ", llog.LstdFlags)
 			redis.SetLogger(lg)
