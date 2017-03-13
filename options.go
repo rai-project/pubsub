@@ -6,7 +6,9 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 
+	"github.com/rai-project/config"
 	"github.com/rai-project/serializer"
+	"github.com/rai-project/utils"
 )
 
 type Options struct {
@@ -28,14 +30,21 @@ func Username(s string) Option {
 
 func Password(s string) Option {
 	return func(o *Options) {
+		if utils.IsEncryptedString(s) {
+			p, err := utils.DecryptStringBase64(config.App.Secret, s)
+			if err == nil {
+				o.Password = p
+				return
+			}
+		}
 		o.Password = s
 	}
 }
 
 func UsernamePassword(u string, p string) Option {
 	return func(o *Options) {
-		o.Username = u
-		o.Password = p
+		Username(u)(o)
+		Password(p)(o)
 	}
 }
 

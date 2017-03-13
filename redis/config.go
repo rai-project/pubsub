@@ -13,13 +13,12 @@ import (
 )
 
 type redisConfig struct {
-	Provider          string                `json:"provider" config:"pubsub.provider"`
-	Endpoints         []string              `json:"endpoints" config:"pubsub.endpoints"`
-	Password          string                `json:"password" config:"pubsub.password"`
-	EncryptedPassword string                `json:"encrypted_password" config:"pubsub.encrypted_password"`
-	Serializer        serializer.Serializer `json:"-" config:"-"`
-	SerializerName    string                `json:"serializer_name" config:"broker.serializer" default:"json"`
-	Cert              string                `json:"cert" config:"pubsub.cert"`
+	Provider       string                `json:"provider" config:"pubsub.provider"`
+	Endpoints      []string              `json:"endpoints" config:"pubsub.endpoints"`
+	Password       string                `json:"password" config:"pubsub.password"`
+	Serializer     serializer.Serializer `json:"-" config:"-"`
+	SerializerName string                `json:"serializer_name" config:"broker.serializer" default:"json"`
+	Cert           string                `json:"cert" config:"pubsub.cert"`
 }
 
 var (
@@ -44,8 +43,8 @@ func (a *redisConfig) Read() {
 		log.WithField("serializer", a.SerializerName).
 			Warn("Cannot find serializer")
 	}
-	if a.Password == "" && a.EncryptedPassword != "" {
-		s, err := utils.DecryptStringBase64(config.App.Secret, a.EncryptedPassword)
+	if utils.IsEncryptedString(a.Password) {
+		s, err := utils.DecryptStringBase64(config.App.Secret, a.Password)
 		if err == nil {
 			a.Password = s
 		}
