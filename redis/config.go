@@ -19,17 +19,21 @@ type redisConfig struct {
 	Serializer     serializer.Serializer `json:"-" config:"-"`
 	SerializerName string                `json:"serializer_name" config:"broker.serializer" default:"json"`
 	Cert           string                `json:"cert" config:"pubsub.cert"`
+	done           chan struct{}         `json:"-" config:"-"`
 }
 
 var (
-	Config = &redisConfig{}
+	Config = &redisConfig{
+		done: make(chan struct{}),
+	}
 )
 
 func (redisConfig) ConfigName() string {
 	return "Redis"
 }
 
-func (redisConfig) SetDefaults() {
+func (a *redisConfig) SetDefaults() {
+	vipertags.SetDefaults(a)
 }
 
 func (a *redisConfig) Read() {
@@ -49,6 +53,10 @@ func (a *redisConfig) Read() {
 			a.Password = s
 		}
 	}
+}
+
+func (c redisConfig) Wait() {
+	<-c.done
 }
 
 func (c redisConfig) String() string {
