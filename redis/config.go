@@ -37,6 +37,7 @@ func (a *redisConfig) SetDefaults() {
 }
 
 func (a *redisConfig) Read() {
+	defer close(a.done)
 	vipertags.Fill(a)
 	switch strings.ToLower(a.SerializerName) {
 	case "json":
