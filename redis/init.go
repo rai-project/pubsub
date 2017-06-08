@@ -4,7 +4,7 @@ import (
 	llog "log"
 	"os"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	redis "gopkg.in/redis.v5"
 
 	"github.com/rai-project/config"
