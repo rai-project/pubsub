@@ -1,11 +1,11 @@
 package: github.com/rai-project/pubsub
 import:
 - package: github.com/sirupsen/logrus
-  version: ~1.0.0
+  version: ^1.0.0
 - package: github.com/Sirupsen/logrus
   repo: git@github.com:/sirupsen/logrus
   vcs: git
-  version: ~1.0.0
+  version: ^1.0.0
 - package: github.com/pkg/errors
   version: ~0.8.0
 - package: github.com/rai-project/config
