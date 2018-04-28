@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"github.com/pkg/errors"
 	"github.com/rai-project/pubsub"
 	redis "gopkg.in/redis.v5"
 )
@@ -17,7 +18,7 @@ type subscriber struct {
 func NewSubscriber(conn *connection, channel string) (pubsub.Subscriber, error) {
 	sub, err := conn.Subscribe(channel)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(err, "cannot subscribe to %s redis channel", channel)
 	}
 	return &subscriber{
 		conn:    conn,
